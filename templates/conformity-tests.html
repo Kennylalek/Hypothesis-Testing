@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/conformity-tests.css">
+    <title>Hypothesis Testing</title>
+</head>
+<body>
+    <nav id="navbar" class="a">
+        <a id="title">Hypothesis Testing</a>
+        <button id="icon-drop"><img src="/static/images/menu-svgrepo-com.svg"></button>
+        <div id="links">
+            <ul>
+                <li><a class="nav-link">Home</a></li>
+                <li><a class="nav-link">Calculators</a></li>
+                <li><a class="nav-link">About</a></li>
+                <li><a class="nav-link">Contact us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section>
+        <form action="/conformity-tests", method="post">
+            <div id="title-div">
+                <h1>Conformity tests of a parameter</h1>
+            </div>
+            <div class="double">
+                <div class="test-type half left">
+                    <label>Select Parameter</label>
+                    <select id="parameter" name="parameter">
+                        <option value="Mean">Mean</option>
+                        <option value="Variance">Variance</option>
+                        <option value="Proportion">Proportion</option>
+                    </select>
+                </div>
+                <div class="sample-size half right">
+                    <label>Sample Size (n)</label>
+                    <input type="text" name="sample-size">
+                </div>
+            </div>
+            <div class="hypothesis double">
+                <div class="null half left">
+                    <label>Null Hypothesis H<sub>0</sub></label>
+                    <div class="inputs">
+                        <p class="param">μ</p>
+                        <select id="hypothesis-select" name="hypothesis">
+                            <option value="0">=</option>
+                            <option value="1">&le;</option>
+                            <option value="2">&ge;</option>
+                        </select>
+                        <input id="null-input" name="test-value">
+                    </div>
+                </div>
+                <div class="alternative half right">
+                    <label>Alternative Hypothesis H<sub>1</sub></label>
+                    <div class="inputs">
+                        <p class="param">μ</p>
+                        <select id="alternative-select" disabled>
+                            <option value="ne">&NotEqual;</option>
+                            <option value="gt">&gt;</option>
+                            <option value="lt">&lt;</option>
+                        </select>
+                        <input id="alternative-input" disabled> 
+                    </div>
+                </div>
+            </div>
+            <div class="data-type">
+                <div class="full">
+                    <label>Select the Type of your Data</label>
+                    <select>
+                        <option value="param">Mean and Standard Deviation</option>
+                        <option value="data">Raw Data</option>
+                    </select>
+                </div>
+            </div>
+            <div class="data"></div>
+            <div class="SD double">
+                <div class="alpha half left">
+                    <label>Significance Level (α)</label>
+                    <select name="alpha">
+                        <option value="1">0.01</option>
+                        <option value="5" selected>0.05</option>
+                        <option value="10">0.1</option>
+                    </select>
+                </div>
+                <div class="is-it half right">
+                    <label>Is Standard Deviation (σ) known?</label>
+                    <select id="SD-select" name="known">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
+            <div id="params" class="double">
+                <div class="mean half left">
+                    <label id="mean-label">Sample Mean (x̄)</label>
+                    <input type="text" name="sample-mean">
+                </div>
+                <div class="standard-deviation half right">
+                    <label id="SD-label">Population Standard Deviation (σ)</label>
+                    <input type="text" id="SD" name="std">
+                </div>
+            </div>
+            <div class="result full">
+                <div class="btn-div">
+                    <button type="submit">Calculate</button>
+                </div>
+            </div>
+            {% if result is not none %}
+                <h2>{{ result }}</h2>
+            {% endif %}
+        </form>
+    </section>
+
+    <!--<script src="/static/js/nav-bar.js"></script>-->
+    <script src="/static/js/conformity-tests.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+h1 {
+    text-align: center;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 8rem 0;
+    margin-bottom: 2rem;
+    padding: 0 4rem;
+}
+
+section form {
+    width: 70%;
+    min-width: 570px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem;
+    gap: 2rem;
+
+    /*
+    border: 1.7px solid black;
+    border-radius: 1rem;
+    */
+}
+
+
+
+.double, .data-type {
+    display: flex;
+    max-width: 560px;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label {
+    display: block;
+    font-size: 1rem;
+}
+
+.half {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.left input, .left select, .left label, .left div, .right label {
+    align-self: flex-start;
+}
+
+.right input, .right select, .right div {
+    align-self: flex-end;
+}
+
+.left label {
+    width: 100%;
+}
+
+.half input, .half select, .full select, .full button {
+    max-width: 250px;
+    width: 100%;
+    height: 2.7rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.2rem;
+    padding: 0.24rem 0.5rem;
+    padding-bottom: 0.36rem;
+    border: 1.75px solid black;
+    border-radius: 0.4rem;
+    margin: 0.3rem 0;
+    font-weight: 500;
+}
+
+.btn-div {
+    align-self: center;
+    width: 30%;
+    max-width: 400px;
+}
+
+.btn-div button {
+    background-color: green;
+    color: white;
+    border: 1.75px solid green;
+    max-width: 400px;
+}
+
+.btn-div button:hover {
+    cursor: pointer;
+    background-color: white;
+    color: green;
+}
+
+.data-type, .full select {
+    max-width: 560px;
+}
+
+.half label {
+    max-width: 250px;
+}
+
+.inputs {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.inputs select, .inputs input {
+    max-width: 170px;
+}
+
+.inputs select {
+    max-width: 50px;
+    padding-right: 0;
+}
+
+.full {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.data {
+    display: none;
+}
+
+.inputs p{
+    max-width: 10px;
+    margin-top: 0.4rem;
+    font-size: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}

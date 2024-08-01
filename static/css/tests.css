@@ -1,0 +1,64 @@
+#title {
+    color: white;
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+#icon-drop {
+    display: none;
+}
+
+#links {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+    padding: .5rem 0rem;
+}
+
+#links ul {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    justify-content: space-around;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+}
+
+.nav-link:hover {
+    color: white;
+    cursor: pointer;
+}
+
+section {
+    margin: 6rem 0;
+    margin-bottom: 0;
+    padding: 2rem 5rem;
+}
+
+article {
+    padding: 1rem 5rem;
+}
+
+#first {
+    margin: 0;
+}
+
+.article {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 4rem 0;
+    padding: .5rem 0;
+}
+
+.article p {
+    font-size: 1.2rem;
+    line-height: 2rem;
+}

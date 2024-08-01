@@ -1,0 +1,44 @@
+section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 6rem 0;
+    margin-bottom: 0;
+    padding: 2rem 5rem;
+}
+
+article {
+    padding: 1rem 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#first {
+    margin: 0;
+    width: 50%;
+}
+
+#welcome {
+    font-size: 2.7rem;
+    font-weight: 700;
+}
+
+#image {
+    width: 80%;
+    right: 0;
+}
+
+.img {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+#Introduction {
+    background-color: white;
+    width: 80%;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+}

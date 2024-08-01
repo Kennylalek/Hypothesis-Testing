@@ -1,0 +1,150 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #cacaca;
+    /*background-image: url("/static/images/bg-texture.png");*/
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    background-color: #343a40;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 5rem;
+}
+
+.navbar-scrolled {
+    background-color: #343a40;
+    transition: background-color 0.3s;
+}
+
+.navbar-default {
+    background-color: transparent;
+    transition: background-color 0.3s;
+}
+
+a {
+    text-decoration: none;
+    background-color: transparent;
+}
+
+#title {
+    color: white;
+    display: inline-block;
+    font-size: 1.4rem;
+    font-weight: 500;
+}
+
+#icon-drop {
+    display: none;
+    background-color: #343a40;
+    border: none;
+}
+
+#links {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+    padding: .5rem 0rem;
+}
+
+#links ul {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    justify-content: space-around;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.5);
+    padding: 0.5rem 1rem;
+    font-size: 1.1rem;
+}
+
+.nav-link:hover {
+    color: white;
+    cursor: pointer;
+}
+
+.article {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 4rem 0;
+    padding: .5rem 0;
+}
+
+.article p {
+    font-size: 1.2rem;
+    line-height: 2rem;
+    text-align: justify;
+}
+
+.article button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: .7rem 1.2rem;
+    color: white;
+    background-color: green;
+    border: 2px solid green;
+    border-radius: .75rem;
+}
+
+.article button:hover {
+    cursor: pointer;
+    border: 2px solid green;
+    background-color: white;
+    color: green;
+}
+
+.sub-article {
+    padding: 0 2rem;
+}
+
+h1, h2, h3, h4, h5 {
+    font-weight: 600;
+}
+
+h1{
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.8rem;
+}
+
+h3 {
+    font-size: 1.6rem;
+}
+
+h4 {
+    font-size: 1.4rem;
+}
+
+@media screen and (max-width: 920px) {
+    #icon-drop {
+        display: block;
+    }
+
+    #icon-drop:hover {
+        cursor: pointer;
+    }
+
+    #links {
+        display: none;
+    }
+}
