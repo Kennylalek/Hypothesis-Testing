@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #cacaca;
+    background-color: #d6f3ff;
     /*background-image: url("/static/images/bg-texture.png");*/
 }
 
@@ -16,7 +16,7 @@ nav {
     right: 0;
     left: 0;
     z-index: 1030;
-    background-color: #343a40;
+    background-color: #007bbf;
 
     display: flex;
     align-items: center;
@@ -39,6 +39,10 @@ a {
     background-color: transparent;
 }
 
+input:disabled {
+    background-color: white;
+}
+
 #title {
     color: white;
     display: inline-block;
@@ -48,7 +52,7 @@ a {
 
 #icon-drop {
     display: none;
-    background-color: #343a40;
+    background-color: #007bbf ;
     border: none;
 }
 
@@ -99,16 +103,16 @@ a {
     font-weight: 600;
     padding: .7rem 1.2rem;
     color: white;
-    background-color: green;
-    border: 2px solid green;
+    background-color: #00b3ff;
+    border: 2px solid #00b3ff;
     border-radius: .75rem;
 }
 
 .article button:hover {
     cursor: pointer;
-    border: 2px solid green;
+    border: 2px solid #00b3ff;
     background-color: white;
-    color: green;
+    color: #00b3ff;
 }
 
 .sub-article {
