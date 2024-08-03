@@ -2,9 +2,9 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 6rem 0;
+    margin: 4.5rem 0;
     margin-bottom: 0;
-    padding: 2rem 5rem;
+    padding: 4rem 5rem;
 }
 
 article {
