@@ -1,18 +1,23 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, jsonify
 from utility import *
 
 app = Flask(__name__)
 
-@app.route('/', methods = ['GET'])
+@app.route('/')
 def index() :
     return render_template('index.html')
 
-@app.route('/tests', methods = ['GET'])
+@app.route('/tests')
 def tests() :
     return render_template('tests.html')
 
-@app.route('/conformity-tests', methods = ['GET', 'POST'])
+@app.route('/conformity-tests')
 def conformity_tests() :
+    return render_template('conformity-tests.html')
+
+
+@app.route('/get-result', methods = ['POST'])
+def get_result() :
 
     text = None
     if request.method == 'POST' :
@@ -22,8 +27,6 @@ def conformity_tests() :
             hypothesis = int(request.form['hypothesis'])
             test_value = float(request.form['test-value'])
             alpha = int(request.form['alpha'])
-
-            print('done here!!!')
 
             if parameter == 'Mean' :
                 sample_mean = float(request.form['sample-mean'])
@@ -37,21 +40,41 @@ def conformity_tests() :
 
             elif parameter == 'Variance' :
                 std = float(request.form['std'])
-                result = variance_comformity_test(std, test_value, n, alpha, hypothesis)
+                result = variance_comformity_test(std, test_value, n, alpha / 100, hypothesis)
             
             elif parameter == 'Proportion' :
                 proportion = float(request.form['sample-mean'])
-                result = proportion_comformity_test(proportion, test_value, n, alpha, hypothesis)
+                print('done here !!!')
+                result = proportion_comformity_test(proportion, test_value, n, alpha / 100, hypothesis)
             
-            if result :
-                text = 'We can not reject H0'
+
+            if result[0] :
+                text = f'we\;can\;not\;reject\;H_0'
+                desc = f"Since\;{round(result[2], 3)} \\in " + result[5] + ',\;then\;'
             else :
-                text = 'We reject H0'
+                text = 'we\;reject\;H_0'
+                desc = f"Since\;{round(result[2], 3)} \\notin " + result[5] + ',\;then\;'
+            
+            data = {
+                "parameter" : parameter,
+                "test_type" : result[1],
+                "test_value" : test_value,
+                "alpha" : alpha / 100,
+                "text" : text,
+                "formula" : result[3],
+                "stat_value" : round(result[2], 3),
+                "critical_region" : result[5],
+                "symbol" : result[6],
+                "desc" : desc,
+                "text" : text
+            }
+
+            print(data)
 
         except Exception as e :
             return e
         
-    return render_template('conformity-tests.html', result = text)
+    return jsonify(data)
 
        
 
