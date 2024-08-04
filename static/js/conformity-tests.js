@@ -1,5 +1,6 @@
 let parameter_select = document.querySelector('#parameter');
 let parameters = document.querySelectorAll('.param');
+let params_div = document.querySelector('#params');
 
 let null_select = document.querySelector('#hypothesis-select');
 let alternative_select = document.querySelector('#alternative-select');
@@ -10,38 +11,35 @@ let alternative_input = document.querySelector('#alternative-input')
 let data_type = document.querySelector("#data-type");
 let spreadsheet = document.querySelector("#spreadsheet");
 
+let size = document.getElementById('sample-size');
 let SD_select = document.querySelector('#SD-select');
-let SD_label = document.querySelector('#SD-label');
+
 let mean_label = document.querySelector('#mean-label');
+let SD_label = document.querySelector('#SD-label');
 
 let mean_div = document.querySelector('.mean');
 let SD_div = document.querySelector('.standard-deviation');
 
-let params_div = document.querySelector('#params');
+let mean_inp = document.getElementById('sample_mean');
+let std_inp = document.getElementById('SD');
+
 
 data_type.addEventListener('change', function() {
     var selectedValue = this.value;
 
     if (selectedValue == 'param'){
-        spreadsheet.innerHTML = '';
         spreadsheet.style.display = 'none';
+        /*
+        mean_inp.disabled = false;
+        std_inp.disabled = false;
+        */
     }
     else {
-        let n = parseInt(document.getElementById('sample-size').value);
-        console.log(n);
-        console.log(typeof(n));
-        const arr = [new Array(n).fill('')];
-
-        var hot = new Handsontable(spreadsheet, {
-            data: arr,
-            colHeaders: true,
-            rowHeaders: false,
-            nestedHeaders: [
-                {label: 'data', colspan: n}
-            ],
-            licenseKey: 'non-commercial-and-evaluation'
-        });
         spreadsheet.style.display = 'block';
+        /*
+        mean_inp.disabled = true;
+        std_inp.disabled = true;
+        */
     }
 });
 
@@ -125,11 +123,68 @@ SD_select.addEventListener('change', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    size.addEventListener('input', function() {
+        spreadsheet.innerHTML = '';
+        let n = parseInt(size.value);
+        var arr = [new Array(n).fill('')];
+        
+        var H = new Handsontable(spreadsheet, {
+            data: arr,
+            colHeaders: true,
+            rowHeaders: false,
+            nestedHeaders: [
+                [{label: 'Your Sample', colspan: n}]
+            ],
+            licenseKey: 'non-commercial-and-evaluation'
+        });
+
+        H.addHook('afterChange', function(changes, source) {
+            if (source == 'edit') {
+                const choice = data_type.value;
+
+                if (choice == 'data') {
+                    var data = H.getData();
+                    data = data.map(row => row.map(cell => cell === '' ? 0 : cell));
+                    /*
+                    const isFilled = data.every(row => row.every(cell => cell !== ''));
+
+                    if (!isFilled) 
+                        alert("All cells must be filled");
+                    */
+                    const tableData = {
+                        data: data.flat()
+                    };
+                    
+                    fetch('/get-table-data', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(tableData)
+                    })
+                    .then(response => {
+                        return response.json();
+                    })
+                    .then(result => {
+                        if (result.success) {
+                            mean_inp.value = parseFloat(result.mean.toFixed(3));
+                            std_inp.value = parseFloat(result.std.toFixed(3));
+                        }
+                        else {
+                            console.log("Probleme here");
+                        }
+                    })
+                }
+            }
+        });
+    });
+
     const dataForm = document.getElementById('dataForm');
     const solution = document.getElementById('solution');
 
     dataForm.addEventListener('submit', function(event) {
         event.preventDefault();
+        document.getElementById('result').innerHTML = '';
         let allFilled = true;
         const errorLabels = document.querySelectorAll('.error-label');
         const inputsAndSelects = document.querySelectorAll('input, select');
@@ -206,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => {
                 console.error('Error fetching the result:', error);
-                document.getElementById('result').innerText = 'An error has occurred.';
+                document.getElementById('result').innerHTML = 'An error has occurred.';
             });
         }
     });
