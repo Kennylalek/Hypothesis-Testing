@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/conformity-tests.css">
+    <link rel="stylesheet" href="/static/css/parameters-tests.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@8.4.0/dist/handsontable.full.min.css">
     <title>Hypothesis Testing</title>
 </head>
@@ -27,7 +27,7 @@
             <h1 id="welcome">Conformity Tests for a Parameter</h1>
             <p>Perform one-tailed and two-tailed conformity tests (z-test, t-test and chi-squared test) on various parameters including mean, variance and proportion. </p>
             <p>Fill the form bellow and click on "calculate".</p>
-            <a><button id="scroll">Parameter Conformity Test</button></a>
+            <a><button id="scroll">Parameter Conformity Tests</button></a>
         </div>
         <div class="img"><img id="image" src="/static/images/stat.svg"></div>
     </section>
@@ -112,7 +112,7 @@
             <div id="params" class="double">
                 <div class="mean half left">
                     <label id="mean-label">Sample Mean (x̄)</label>
-                    <input type="text" name="sample-mean" value="176">
+                    <input id="sample_mean" type="text" name="sample-mean" value="176">
                     <label class="error-label">Field required</label>
                 </div>
                 <div class="standard-deviation half right">

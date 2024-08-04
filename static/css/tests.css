@@ -36,14 +36,8 @@
     cursor: pointer;
 }
 
-section {
-    margin: 6rem 0;
-    margin-bottom: 0;
-    padding: 2rem 5rem;
-}
-
 article {
-    padding: 1rem 5rem;
+    padding: 1rem 0rem;
 }
 
 #first {
@@ -61,4 +55,12 @@ article {
 .article p {
     font-size: 1.2rem;
     line-height: 2rem;
+}
+
+#section {
+    margin: 6rem 0;
+    margin-bottom: 0;
+    padding: 2rem 5rem;
+    flex-direction: column;
+    align-items: flex-start;
 }

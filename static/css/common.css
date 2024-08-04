@@ -34,6 +34,13 @@ nav {
     transition: background-color 0.3s;
 }
 
+section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4rem 5rem;
+}
+
 a {
     text-decoration: none;
     background-color: transparent;
