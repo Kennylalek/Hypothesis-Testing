@@ -62,6 +62,22 @@ section {
     */
 }
 
+#title-div h1{
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+
+#title-div h4{
+    text-align: center;
+    margin-bottom: 0.4rem;
+}
+
+#title-div p{
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+
 input, select {
     border: 1.6px solid black;
 }
@@ -114,7 +130,7 @@ label {
     max-width: 250px;
 }
 
-.half input, .half select, .full select, .full button {
+.half input, .half select, .full select, .full button, .full input {
     max-width: 250px;
     width: 100%;
     height: 2.2rem;
@@ -149,9 +165,8 @@ label {
     color: #007bbf;
 }
 
-.full select {
+.full select, .full input {
     max-width: 560px;
-
 }
 
 .inputs {
@@ -281,4 +296,12 @@ h5 {
 
 .spreadsheet {
     display: none;
+}
+
+.htCenter {
+    text-align: center;
+}
+
+.htMiddle {
+    vertical-align: middle;
 }
