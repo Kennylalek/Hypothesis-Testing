@@ -58,7 +58,7 @@ std_select.addEventListener('change', function() {
             add_text(' Population Std Dev (σ', std_div);
             break;
         case 'no' :
-            add_text(' Sample Std Dev (σ', std_div);
+            add_text(' Sample Std Dev (S', std_div);
             break;
         default :
             break;
