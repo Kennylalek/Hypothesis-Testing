@@ -20,6 +20,10 @@ def conformity_tests() :
 def comparison_tests() :
     return render_template('comparison-tests.html')
 
+@app.route('/independence-tests')
+def independnce_tests() :
+    return render_template('independence-tests.html')
+
 
 @app.route('/get-result', methods = ['POST'])
 def get_result() :
@@ -162,6 +166,73 @@ def get_params() :
 
         except Exception as e :
             print(e)
+    return jsonify(data)
+
+
+@app.route('/independence', methods = ['POST'])
+def independence() :
+    try :
+        recieved = request.json
+        form_data = recieved.get('form')
+        table_data = recieved.get('table')
+
+        table_data = [[float(element) for element in row] for row in table_data]
+        print("Form Data:", form_data)
+        print("Table Data:", table_data)
+
+        character = form_data['character']
+        alpha = int(form_data['alpha'])
+
+        rows = form_data['rows']
+        cols = form_data['cols']
+
+        if character == 'qualitative' :
+            rows = int(rows)
+            cols = int(cols)
+            result = qualitative_variables_test(table_data, alpha / 100, rows, cols)
+            n = (rows - 1) * (cols - 1)
+
+        else :
+            test_type = form_data['test-type']
+            n = int(form_data['sample-size'])
+
+            if test_type == 'parametric' :
+                result = null_correlation_test(table_data, alpha / 100, n)
+                print(result[0])
+            else :
+                result = spearman_test(table_data, alpha / 100, n)
+                print(result[0])
+
+            n -= 2
+
+        if bool(result[0]) :
+            print("hehehehehe")
+            text = f'we\;accept\;H_0'
+            print(text)
+            desc = f"Since\;{round(result[5], 3)} \\in " + str(result[4]) + f",\;then\;"
+            print(desc)
+            
+        else :
+            text = 'we\;reject\;H_0'
+            desc = f"Since\;{round(result[5], 3)} \\notin " + str(result[4]) + f',\;then\;'
+            
+        data = {
+            "character" : character,
+            "rows" : rows,
+            "cols" : cols,
+            "alpha" : alpha / 100,
+            "formula" : result[1],
+            "stat_value" : round(result[5], 3),
+            "critical_region" : result[4],
+            "symbol" : result[2],
+            "desc" : desc,
+            "text" : text,
+            "dof" : n
+        }
+    
+    except Exception as e :
+        return e
+    
     return jsonify(data)
 
 
