@@ -413,3 +413,73 @@ def Kruskal_Wallis_test(data, sample_count, alpha) :
     acceptance = statistic <= critical_value and statistic >= 0
 
     return acceptance, formula, symbol, critical_value, critical_region, statistic
+
+
+def Mann_Withney_test(sample_1, sample_2, alpha) :
+    n1, n2 = len(sample_1), len(sample_2)
+    u1, p_value = stats.mannwhitneyu(sample_1, sample_2)
+    u2 = n1 * n2 - u1
+
+    u = min(u1, u2)
+
+    if n1 <= 20 and n2 <= 20 :
+        tup = (n1, n2)
+        critical_value = mann_withney_critical_values[alpha][tup]
+
+        formula = r"\;u = min\{u_1, u_2\}"
+        symbol = r"\;" + f"m_{{{alpha}}} = {critical_value}"
+        critical_region = r"\;" + f"[{critical_value}," + r" +\infty["
+
+        acceptance = u > critical_value
+
+    else :
+        mu = n1 * n2 / 2
+        sigma = math.sqrt((n1 * n2 * (n1 + n2 + 1)) / 12)
+        U_alpha = stats.norm.ppf(1 - alpha, loc = 0, scale = 1)
+
+        critical_value = (U_alpha - mu) / sigma
+        
+        symbol = r"\;" + f"z_{{{alpha}}} = {critical_value}"
+        critical_region = r"\;" + f"]{-critical_value}, {critical_value}["
+
+        acceptance =  u <= critical_value and u >= -critical_value
+
+    
+    return acceptance, formula, symbol, critical_value, critical_region, u, u1, u2
+
+
+def wilcoxon_test(sample_1, sample_2, sample_size, alpha) :
+
+    w, p_value = stats.wilcoxon(sample_1, sample_2)
+    first = np.array(sample_1)
+    second = np.array(sample_2)
+    differences = first - second
+
+    ranks = stats.rankdata(np.abs(differences))
+    w_plus = np.sum(ranks[differences > 0])
+    w_minus = np.sum(ranks[differences < 0])
+    
+
+    if sample_size <= 25 :
+        critical_value = wilcoxon_critical_values[alpha][sample_size]
+        print(critical_value, sample_size)
+
+        formula = r"\;u = min\{w_+, w_-\}"
+        symbol = r"\;" + f"w_{{{alpha}}} = {critical_value}"
+        critical_region = r"\;" + f"[0, {critical_value}["
+
+        acceptance = w < critical_value
+
+    else :
+        mu = sample_size * (sample_size + 1) / 2
+        sigma = math.sqrt((sample_size * (sample_size + 1) * (2 * sample_size + 1)) / 24)
+        U_alpha = stats.norm.ppf(1 - alpha, loc = 0, scale = 1)
+
+        critical_value = (U_alpha - mu) / sigma
+        
+        symbol = r"\;" + f"z_{{{alpha}}} = {critical_value}"
+        critical_region = r"\;" + f"]{-critical_value}, {critical_value}["
+
+        acceptance =  w <= critical_value and w >= -critical_value
+
+    return acceptance, formula, symbol, critical_value, critical_region, w, w_plus, w_minus

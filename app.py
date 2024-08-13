@@ -28,6 +28,10 @@ def independnce_tests() :
 def multiple_sample_tests() :
     return render_template('multiple-samples-tests.html')
 
+@app.route('/non-parametric-tests')
+def non_parametric_tests() :
+    return render_template('non-parametric.html')
+
 
 @app.route('/get-result', methods = ['POST'])
 def get_result() :
@@ -305,6 +309,76 @@ def multiple_samples() :
         return e
     
     return jsonify(data)
+
+
+@app.route('/non-parametric', methods = ['POST'])
+def non_parametric() :
+    try :
+        recieved = request.json
+        print("hellooooo")
+        form_data = recieved.get('form')
+        table_1_data = recieved.get('table_1')
+        table_2_data = recieved.get('table_2')
+        test = form_data['test']
+        print("heeeeree")
+        print(table_1_data, table_2_data)
+
+        if test == 'MW' :
+            table_1_data = table_1_data[0]
+            table_2_data = table_2_data[0]
+            print("boboboob")
+            table_1_data = [float(element) for element in table_1_data]
+            print("problem here")
+            table_2_data = [float(element) for element in table_2_data]
+            print("hehehehe")
+        else :
+            table_1_data = [[float(element) for element in row] for row in table_1_data]
+
+        alpha = int(form_data['alpha'])
+        n1 = int(form_data['sample-size-1'])
+        print(n1)
+
+        print(table_1_data, table_2_data)
+
+        if test == 'MW' :
+            n2 = int(form_data['sample-size-2'])
+            result = Mann_Withney_test(table_1_data, table_2_data, alpha / 100)
+            print("noooooo")
+
+        else :
+            n2 = ""
+            result = wilcoxon_test(table_1_data[0], table_1_data[1], n1, alpha / 100)
+
+
+        if bool(result[0]) :
+            text = r'we\;accept\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) + r" \in " + str(result[4]) + r",\;then\;"
+            
+        else :
+            text = r'we\;reject\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) +  r" \notin " + str(result[4]) + r',\;then\;'
+            
+        data = {
+            "n1" : n1,
+            "n2" : n2,
+            "v1" : result[6],
+            "v2" : result[7],
+            "test" : test,
+            "alpha" : alpha / 100,
+            "formula" : result[1],
+            "stat_value" : round(result[5], 3),
+            "critical_region" : result[4],
+            "symbol" : result[2],
+            "desc" : desc,
+            "text" : text
+        }
+
+    
+    except Exception as e :
+        return e
+    
+    return jsonify(data)
+
 
 if __name__ == "__main__" :
     app.run(debug = True, port=5001)
