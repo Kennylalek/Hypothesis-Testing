@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.stats as stats
 import math
-from spearman import spearman_critical_values
+from critical_values import *
 
 def pearson_critical_value(alpha, df):
     # Calculate the critical value for the t-distribution
@@ -9,7 +9,7 @@ def pearson_critical_value(alpha, df):
     
     # Convert t-value to Pearson correlation coefficient
     r_critical = np.sqrt(t_critical ** 2 / (t_critical ** 2 + df))
-    
+
     return r_critical
 
 def mean_conformity_Z_test(sample_mean, test_value, standard_deviation, sample_size, alpha, test_type) :
@@ -20,19 +20,19 @@ def mean_conformity_Z_test(sample_mean, test_value, standard_deviation, sample_s
     if test_type == 0 :
         test_type = 'Two-tailed'
         critical_value = round(stats.norm.ppf(1 - alpha / 2, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha / 2}}} = {critical_value}"
-        critical_region = f"\;[{-critical_value}, {critical_value}]"
+        symbol = r"\;" + f"z_{{{1 - alpha / 2}}} = {critical_value}"
+        critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
         acceptance =  Statistic <= critical_value and Statistic >= -critical_value
     else :
         critical_value = round(stats.norm.ppf(1 - alpha, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"z_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
-            critical_region = f"\;]-\\infty, {critical_value}]"
+            critical_region = r"\;]- \infty" + f", {critical_value}]"
             test_type = 'Left-tailed'
             acceptance = Statistic <= critical_value
         elif test_type == 2 :
-            critical_region = f"\;[{-critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{-critical_value}" + r", +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= -critical_value
 
@@ -47,19 +47,19 @@ def mean_conformity_T_test(sample_mean, test_value, standard_deviation, sample_s
     if test_type == 0 :
         test_type = 'Two-tailed'
         critical_value = round(stats.t.ppf(1 - alpha / 2,sample_size - 1), 3)
-        symbol = f"\;t_{{{alpha / 2}}} = {critical_value}"
-        critical_region = f"\;[{-critical_value}, {critical_value}]"
+        symbol = r"\;" + f"t_{{{1 - alpha / 2}}} = {critical_value}"
+        critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
         acceptance = Statistic <= critical_value and Statistic >= -critical_value
     else :
         critical_value = round(stats.t.ppf(1 - alpha, sample_size - 1), 3)
-        symbol = f"\;t_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"t_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
-            critical_region = f"\;]-\\infty, {critical_value}]"
+            critical_region = r"\;]- \infty" + f", {critical_value}]"
             test_type = 'Left-tailed'
             acceptance = Statistic <= critical_value
         elif test_type == 2 :
-            critical_region = f"\;[{-critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{-critical_value}" + r", +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= -critical_value
 
@@ -74,19 +74,19 @@ def proportion_comformity_test(estimated_proportion, test_value, sample_size, al
     if test_type == 0 :
         test_type = 'Two-tailed'
         critical_value = round(stats.norm.ppf(1 - alpha / 2, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha / 2}}} = {critical_value}"
-        critical_region = f"\;[{-critical_value}, {critical_value}]"
+        symbol = r"\;" + f"z_{{{1 - alpha / 2}}} = {critical_value}"
+        critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
         acceptance = Statistic <= critical_value and Statistic >= -critical_value
     else :
         critical_value = round(stats.norm.ppf(1 - alpha, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"z_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
             test_type = 'Left-tailed'
-            critical_region = f"\;]-\\infty, {critical_value}]"
+            critical_region = r"\;" + f"]-\\infty, {critical_value}]"
             acceptance = Statistic <= critical_value
         elif test_type == 2 :
-            critical_region = f"\;[{-critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{-critical_value}," +  r" +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= -critical_value
 
@@ -105,22 +105,22 @@ def variance_comformity_test(standard_deviation, test_value, sample_size, alpha,
 
         critical_value = (critical_value_1, critical_value_2)
 
-        symbol = f"\;\chi^2_{{{alpha}}} = {critical_value_1},\chi^2_{{{1 - alpha}}} = {critical_value_2}"
+        symbol = r"\;\chi^2_" + f"{{{alpha / 2}}} = {critical_value_1}," + r"\chi^2_" + f"{{{1 - alpha / 2}}} = {critical_value_2}"
 
-        critical_region = f"\;[{critical_value_1}, {critical_value_2}]"
+        critical_region = r"\;" + f"[{critical_value_1}, {critical_value_2}]"
 
         acceptance =  Statistic <= critical_value_2 and Statistic >= critical_value_1
     
     else :
         critical_value = round(stats.chi2.ppf(1 - alpha, sample_size - 1), 3)
-        symbol = f"\;\chi^2_{{{alpha}}} = {critical_value}"
+        symbol = r"\;\chi^2_" + f"{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
-            critical_region = f"\;[0, {critical_value}]"
+            critical_region = r"\;" + f"[0, {critical_value}]"
             test_type = 'Left-tailed'
             acceptance = Statistic <= critical_value and Statistic >= 0
         elif test_type == 2 :
-            critical_region = f"\;[{critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{critical_value}," + r" +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= critical_value
 
@@ -137,21 +137,21 @@ def mean_comparison_Z_test(n_1, n_2, test_type, alpha, mean_1, mean_2, std_1, st
         test_type = 'Two-tailed'
         critical_value = round(stats.norm.ppf(1 - alpha / 2, loc = 0, scale = 1), 3)
 
-        symbol = f"\;z_{{{alpha / 2}}} = {critical_value}"
+        symbol = r"\;" + f"z_{{{1 - alpha / 2}}} = {critical_value}"
 
-        critical_region = f"\;[{-critical_value}, {critical_value}]"
+        critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
 
         acceptance =  Statistic <= critical_value and Statistic >= -critical_value
     else :
         critical_value = round(stats.norm.ppf(1 - alpha, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"z_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
-            critical_region = f"\;]-\\infty, {critical_value}]"
+            critical_region = r"\;]-\\infty," + f" {critical_value}]"
             test_type = 'Left-tailed'
             acceptance = Statistic <= critical_value
         elif test_type == 2 :
-            critical_region = f"\;[{-critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{-critical_value}," + r" +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= -critical_value
 
@@ -168,21 +168,21 @@ def mean_comparison_T_test(n_1, n_2, test_type, alpha, mean_1, mean_2, std_1, st
         test_type = 'Two-tailed'
         critical_value = round(stats.t.ppf(1 - alpha / 2, n_1 + n_2 - 2), 3)
 
-        symbol = f"\;t_{{{alpha / 2}}} = {critical_value}"
+        symbol = r"\;" + f"t_{{{1 - alpha / 2}}} = {critical_value}"
 
-        critical_region = f"\;[{-critical_value}, {critical_value}]"
+        critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
 
         acceptance =  Statistic <= critical_value and Statistic >= -critical_value
     else :
         critical_value = round(stats.t.ppf(1 - alpha, n_1 + n_2 - 2), 3)
-        symbol = f"\;t_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"t_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
-            critical_region = f"\;]-\\infty, {critical_value}]"
+            critical_region = r"\;]-\infty," + f" {critical_value}]"
             test_type = 'Left-tailed'
             acceptance = Statistic <= critical_value
         elif test_type == 2 :
-            critical_region = f"\;[{-critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{-critical_value}," + r" +\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= -critical_value
 
@@ -199,19 +199,19 @@ def proportion_comparison_test(p_1, p_2, n_1, n_2, test_type, alpha) :
     if test_type == 0 :
         test_type = 'Two-tailed'
         critical_value = round(stats.norm.ppf(1 - alpha / 2, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha / 2}}} = {critical_value}"
-        critical_region = f"\;[{-critical_value}, {critical_value}]"
+        symbol = r"\;" + f"z_{{{1 - alpha / 2}}} = {critical_value}"
+        critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
         acceptance = Statistic <= critical_value and Statistic >= -critical_value
     else :
         critical_value = round(stats.norm.ppf(1 - alpha, loc = 0, scale = 1), 3)
-        symbol = f"\;z_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"z_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
             test_type = 'Left-tailed'
-            critical_region = f"\;]-\\infty, {critical_value}]"
+            critical_region = r"\;" + f"]-\\infty, {critical_value}]"
             acceptance = Statistic <= critical_value
         elif test_type == 2 :
-            critical_region = f"\;[{-critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{-critical_value}," + r" +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= -critical_value
 
@@ -230,22 +230,22 @@ def variance_comparison_test(n_1, n_2, std_1, std_2, test_type, alpha) :
 
         critical_value = (critical_value_1, critical_value_2)
 
-        symbol = f"\;f_{{{alpha}}} = {critical_value_1},f^2_{{{1 - alpha}}} = {critical_value_2}"
+        symbol = r"\;" + f"f_{{{alpha / 2}}} = {critical_value_2},f_{{{1 - alpha / 2}}} = {critical_value_1}"
 
-        critical_region = f"\;[{critical_value_1}, {critical_value_2}]"
+        critical_region = r"\;" + f"[{critical_value_2}, {critical_value_1}]"
 
-        acceptance =  Statistic <= critical_value_2 and Statistic >= critical_value_1
+        acceptance =  Statistic <= critical_value_1 and Statistic >= critical_value_2
     
     else :
         critical_value = round(stats.f.ppf(1 - alpha, dfn = n_1 - 1, dfd = n_2 - 1), 3)
-        symbol = f"\;f_{{{alpha}}} = {critical_value}"
+        symbol = r"\;" + f"f_{{{1 - alpha}}} = {critical_value}"
 
         if test_type == 1 :
-            critical_region = f"\;[0, {critical_value}]"
+            critical_region = r"\;" + f"[0, {critical_value}]"
             test_type = 'Left-tailed'
             acceptance = Statistic <= critical_value and Statistic >= 0
         elif test_type == 2 :
-            critical_region = f"\;[{critical_value}, +\\infty["
+            critical_region = r"\;" + f"[{critical_value}," + f" +\\infty["
             test_type = 'Right-tailed'
             acceptance = Statistic >= critical_value
 
@@ -269,9 +269,9 @@ def qualitative_variables_test(original_array, alpha, rows, cols) :
 
     critical_value = round(stats.chi2.ppf(1 - alpha, (rows - 1) * (cols - 1)), 3)
 
-    critical_region = f"\;[0, {critical_value}]"
+    critical_region = r"\;" + f"[0, {critical_value}]"
     
-    symbol = f"\;\chi^2_{{{alpha}}} = {critical_value}"
+    symbol = r"\;\chi^2_" + f"{{{alpha}}} = {critical_value}"
 
     acceptance = statistic < critical_value
 
@@ -279,19 +279,16 @@ def qualitative_variables_test(original_array, alpha, rows, cols) :
 
 
 def null_correlation_test(original_array, alpha, sample_size) :
-    array = np.array(original_array)
     arr_1 = np.array(original_array[0])
     arr_2 = np.array(original_array[1])
 
-    cov_matrix = np.cov(array)
+    cov_matrix = np.cov(arr_1, arr_2)
     covariance = cov_matrix[0, 1]
 
-    print(covariance)
-    std_1 = np.std(arr_1)
-    std_2 = np.std(arr_2)
+    std_1 = np.std(arr_1, ddof = 1)
+    std_2 = np.std(arr_2, ddof = 1)
 
-    r = covariance / (std_1 * std_2)
-    print("r = ", r)
+    r = round(covariance / (std_1 * std_2), 3)
 
     statistic = (r * math.sqrt(sample_size - 2)) / math.sqrt(1 - r ** 2)
 
@@ -299,9 +296,9 @@ def null_correlation_test(original_array, alpha, sample_size) :
 
     critical_value = round(stats.t.ppf(1 - alpha / 2,sample_size - 2), 3)
         
-    symbol = f"\;t_{{{alpha / 2}}} = {critical_value}"
+    symbol = r"\;" + f"t_{{{alpha / 2}}} = {critical_value}"
         
-    critical_region = f"\;[{-critical_value}, {critical_value}]"
+    critical_region = r"\;" + f"[{-critical_value}, {critical_value}]"
     
     acceptance = statistic <= critical_value and statistic >= -critical_value
 
@@ -309,7 +306,6 @@ def null_correlation_test(original_array, alpha, sample_size) :
  
 
 def spearman_test(original_array, alpha, sample_size) :
-    array = np.array(original_array)
     arr_1 = np.array(original_array[0])
     arr_2 = np.array(original_array[1])
 
@@ -328,12 +324,92 @@ def spearman_test(original_array, alpha, sample_size) :
     else :
         critical_value = pearson_critical_value(alpha, sample_size - 2)
 
-    critical_region = f"\;[0, {critical_value}["
-    symbol = f"\;r_{{{alpha}}} = {critical_value}"
+    critical_region = r"\;" + f"[0, {critical_value}["
+    symbol = r"\;" + f"r_{{{alpha}}} = {critical_value}"
 
     acceptance = abs(statistic) <= critical_value
 
     return acceptance, formula, symbol, critical_value, critical_region, statistic
 
-data = [[1.0, 2.0, 3.0, 4.0, 5.0], [6.0, 7.0, 8.0, 9.0, 0.0]]
-print(null_correlation_test(data, 0.05, 5))
+
+def ANOVA(data, sample_count, alpha):
+
+    formula = r"\;F = \frac{\frac{S_F^2}{k - 1}}{\frac{S_R^2}{n - k}}"
+
+    statistic, p_value = stats.f_oneway(*data)
+
+    lengths = [len(sample) for sample in data]
+    flattened_data = [item for sample in data for item in sample]
+    n = sum(lengths)
+
+    mean = np.mean(flattened_data)
+    variance = np.var(flattened_data)
+
+    variances = [np.var(sample) for sample in data]
+    mean_of_variances = round(np.mean(variances), 3)
+
+    means = [np.mean(sample) for sample in data]
+    variance_of_means = round(np.var(means), 3)
+
+    critical_value = round(stats.f.ppf(1 - alpha, dfn = sample_count - 1, dfd = n - sample_count), 3)
+    symbol = r"\;" + f"f_{{{1 - alpha}}} = {critical_value}"
+
+    critical_region = r"\;" + f"[0, {critical_value}]"
+    acceptance = statistic <= critical_value and statistic >= 0
+
+    return acceptance, formula, symbol, critical_value, critical_region, statistic, mean, variance, mean_of_variances, variance_of_means
+
+
+def Bartlett_test(data, sample_count, alpha) :
+    # lengths = [len(sample) for sample in data]
+    # l = 1 + (1 / (3 * (sample_count - 1))) * (sum([1 / (length - 1) for length in lengths]) - 1 / (n - sample_count))
+
+    B, p = stats.bartlett(*data)
+
+    critical_value = round(stats.chi2.ppf(1 - alpha, sample_count - 1), 3)
+
+    formula_l = r"\; \lambda = 1 + \frac{1}{3(k\;-\;1)} \left[\left (\sum\limits_{i = 1}^k \frac{1}{n_i\;-\;1} \right) - \frac{1}{n\;-\;k} \right]"
+
+    formula_b = r"\;B = \frac{1}{\lambda} \left[(n\;-\;k)\;ln\;S_R^2\;-\; \sum\limits_{i = 1}^k (n_i - 1)\;ln\;S_i^2 \right]"
+
+    critical_region = r"\;" + f"[0, {critical_value}]"
+    symbol = r"\;\chi^2_" + f"{{{alpha}}} = {critical_value}"
+
+    acceptance = B < critical_value
+
+    return acceptance, formula_b, symbol ,critical_value, critical_region, B, formula_l
+
+
+def Kruskal_Wallis_test(data, sample_count, alpha) :
+    lengths = [len(sample) for sample in data]
+    lengths.sort(reverse = True)
+    tup = tuple(lengths)
+
+    formula = r"\;h = \frac{12}{n(n\;+\;1)} \left ( \sum\limits_{i=1}^k \frac{r_i^2}{n_i} \right) - 3(n + 1)"
+
+    statistic, p_value = stats.kruskal(*data)
+
+    if sample_count <= 5 :
+        limit = True
+
+        for length in lengths :
+            if length > 16 / sample_count :
+                limit = False
+                break
+        
+        if limit :
+            critical_value = kruskal_wallis_critical_values[alpha][tup]
+            symbol = r"\;" + f"h_{{{alpha}}} = {critical_value}"
+        else :
+            critical_value = round(stats.chi2.ppf(1 - alpha, sample_count - 1), 3)
+            symbol = r"\;\chi^2_" + f"{{{alpha}}} = {critical_value}"
+    else :
+        critical_value = round(stats.chi2.ppf(1 - alpha, sample_count - 1), 3)
+        symbol = r"\;\chi^2_" + f"{{{alpha}}} = {critical_value}"
+
+
+
+    critical_region = r"\;" + f"[0, {critical_value}]"
+    acceptance = statistic <= critical_value and statistic >= 0
+
+    return acceptance, formula, symbol, critical_value, critical_region, statistic

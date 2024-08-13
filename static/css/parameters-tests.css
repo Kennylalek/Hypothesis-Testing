@@ -75,6 +75,7 @@ section {
 #title-div p{
     font-weight: 500;
     font-size: 1.1rem;
+    text-align: center;
 }
 
 
@@ -104,6 +105,7 @@ input, select {
 label {
     display: block;
     font-size: 1rem;
+    min-height: 25px;
 }
 
 .half {
@@ -227,12 +229,13 @@ label {
     color: #d6f3ff;
 }
 
-#solution {
+#solution, #solution-multiple {
     width: 50%;
     min-width: 570px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 1rem 2rem;
     gap: 1rem;
     background-color: #f2fdff;
@@ -243,11 +246,12 @@ label {
     display: none;
 }
 
-#solution div h3 {
+
+#solution div h3, #solution-multiple div h3 {
     margin-bottom: 1.7rem;
 }
 
-#solution div p {
+#solution div p, #solution-multiple div p {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -304,4 +308,23 @@ h5 {
 
 .htMiddle {
     vertical-align: middle;
+}
+
+table {
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+caption {
+    caption-side: top;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
 }

@@ -24,6 +24,10 @@ def comparison_tests() :
 def independnce_tests() :
     return render_template('independence-tests.html')
 
+@app.route('/multiple-samples-tests')
+def multiple_sample_tests() :
+    return render_template('multiple-samples-tests.html')
+
 
 @app.route('/get-result', methods = ['POST'])
 def get_result() :
@@ -56,11 +60,11 @@ def get_result() :
             
 
             if result[0] :
-                text = f'we\;can\;not\;reject\;H_0'
-                desc = f"Since\;{round(result[2], 3)} \\in " + result[5] + ',\;then\;'
+                text = r'we\;can\;not\;reject\;H_0'
+                desc = r"Since\;" + str(round(result[2], 3)) + r" \in " + result[5] + r',\;then\;'
             else :
-                text = 'we\;reject\;H_0'
-                desc = f"Since\;{round(result[2], 3)} \\notin " + result[5] + ',\;then\;'
+                text = r'we\;reject\;H_0'
+                desc = r"Since\;" + str(round(result[2], 3)) + r" \notin " + result[5] + r',\;then\;'
             
             data = {
                 "parameter" : parameter,
@@ -129,8 +133,7 @@ def get_params() :
                     result = mean_comparison_Z_test(n_1, n_2, test_type, alpha / 100, mean_1, mean_2, std_1, std_2)
                 else :
                     result = mean_comparison_T_test(n_1, n_2, test_type, alpha / 100, mean_1, mean_2, std_1, std_2)
-                
-                print('done here')
+            
 
             elif parameter == 'Variance' :
                 std_1 = float(request.form['std-1'])
@@ -145,11 +148,11 @@ def get_params() :
                 result = proportion_comparison_test(mean_1, mean_2, n_1, n_2, test_type, alpha / 100)
 
             if result[0] :
-                text = f'we\;can\;not\;reject\;H_0'
-                desc = f"Since\;{round(result[2], 3)} \\in " + result[5] + ',\;then\;'
+                text = r'we\;can\;not\;reject\;H_0'
+                desc = r"Since\;" + str(round(result[2], 3)) + r" \in " + result[5] + r',\;then\;'
             else :
-                text = 'we\;reject\;H_0'
-                desc = f"Since\;{round(result[2], 3)} \\notin " + result[5] + ',\;then\;'
+                text = r'we\;reject\;H_0'
+                desc = r"Since\;" + str(round(result[2], 3)) + r" \notin " + str(result[5]) + r',\;then\;'
             
             data = {
                 "parameter" : parameter,
@@ -166,6 +169,7 @@ def get_params() :
 
         except Exception as e :
             print(e)
+            
     return jsonify(data)
 
 
@@ -177,8 +181,6 @@ def independence() :
         table_data = recieved.get('table')
 
         table_data = [[float(element) for element in row] for row in table_data]
-        print("Form Data:", form_data)
-        print("Table Data:", table_data)
 
         character = form_data['character']
         alpha = int(form_data['alpha'])
@@ -198,23 +200,18 @@ def independence() :
 
             if test_type == 'parametric' :
                 result = null_correlation_test(table_data, alpha / 100, n)
-                print(result[0])
             else :
                 result = spearman_test(table_data, alpha / 100, n)
-                print(result[0])
 
             n -= 2
 
         if bool(result[0]) :
-            print("hehehehehe")
-            text = f'we\;accept\;H_0'
-            print(text)
-            desc = f"Since\;{round(result[5], 3)} \\in " + str(result[4]) + f",\;then\;"
-            print(desc)
+            text = r'we\;accept\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) + r" \in " + str(result[4]) + r",\;then\;"
             
         else :
-            text = 'we\;reject\;H_0'
-            desc = f"Since\;{round(result[5], 3)} \\notin " + str(result[4]) + f',\;then\;'
+            text = r'we\;reject\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) +  r" \notin " + str(result[4]) + r',\;then\;'
             
         data = {
             "character" : character,
@@ -235,6 +232,79 @@ def independence() :
     
     return jsonify(data)
 
+
+@app.route('/multiple-samples', methods = ['POST'])
+def multiple_samples() :
+    try :
+        test_type = ''
+
+        recieved = request.json
+        print("hellooooo")
+        form_data = recieved.get('form')
+        table_data = recieved.get('table')
+
+        table_data = [[float(element) for element in row] for row in table_data]
+
+        parameter = form_data['parameter']
+        alpha = int(form_data['alpha'])
+
+        n = sum([len(sample) for sample in table_data])
+        k = int(form_data['rows'])
+        
+
+        print(table_data)
+
+        if parameter == 'mean' :
+            test_type = form_data['test-type']
+            if test_type == 'parametric' :
+                t = 'ANOVA'
+                result = ANOVA(table_data, k, alpha / 100)
+                print("noooooo")
+            else :
+                t = 'KW'
+                result = Kruskal_Wallis_test(table_data, k, alpha / 100)
+
+        else :
+            t = 'Bartlett'
+            result = Bartlett_test(table_data, k, alpha / 100)
+
+
+        if bool(result[0]) :
+            text = r'we\;accept\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) + r" \in " + str(result[4]) + r",\;then\;"
+            
+        else :
+            text = r'we\;reject\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) +  r" \notin " + str(result[4]) + r',\;then\;'
+            
+        data = {
+            "t" : t,
+            "n" : n,
+            "k" : k,
+            "alpha" : alpha / 100,
+            "formula" : result[1],
+            "stat_value" : round(result[5], 3),
+            "critical_region" : result[4],
+            "symbol" : result[2],
+            "desc" : desc,
+            "text" : text
+        }
+
+        if parameter == 'mean' and test_type == 'parametric' :
+            data['mean'] = result[6]
+            data['variance'] = result[7]
+            data['SR'] = round(n * result[8], 3)
+            data['SF'] = round(n * result[9], 3)
+            data["S"] = round(n * (result[8] + result[9]), 3)
+
+        elif parameter == 'variance' :
+            data['lambda'] = result[6]
+
+    
+    except Exception as e :
+        return e
+    
+    return jsonify(data)
 
 if __name__ == "__main__" :
     app.run(debug = True, port=5001)
