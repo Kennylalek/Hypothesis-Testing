@@ -110,7 +110,12 @@ for (let i = 0; i <= 1; i++) {
             nestedHeaders: [
                 [{label: desc[i] + ' Sample', colspan: n}]
             ],
-            licenseKey: 'non-commercial-and-evaluation'
+            licenseKey: 'non-commercial-and-evaluation',
+            cells: function (row, col) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter htMiddle';
+                return cellProperties;
+            }
         });
 
         hot.addHook('afterChange', function(chnages, source) {
@@ -158,19 +163,19 @@ dataForm.addEventListener('submit', function(event) {
     document.getElementById('result').innerHTML = '';
     let allFilled = true;
 
+    const errorLabels = document.querySelectorAll('.error-label');
     const inputsAndSelects = document.querySelectorAll('input, select');
-
-    errorLabels.forEach(input => input.classList.remove('error'));
+    
+    errorLabels.forEach(label => label.style.display = 'none');
+    inputsAndSelects.forEach(input => input.classList.remove('error'));
 
     inputsAndSelects.forEach(input => {
-        if (input.value === '' && input.parentElement.classList.contains('hidden')) {
+        if (input.value === '' && !input.parentElement.classList.contains('hidden') && !input.disabled) {
             input.classList.add('error');
             const errorLabel = input.nextElementSibling;
-
-            if (errorLabel && errorLabel.classList,contains('error')) {
+            if (errorLabel && errorLabel.classList.contains('error-label')) {
                 errorLabel.style.display = 'block';
             }
-
             allFilled = false;
         }
     });

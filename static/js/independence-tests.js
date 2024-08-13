@@ -37,7 +37,6 @@ character_type.addEventListener('change', function() {
 
         if (test_type.value == 'parametric') {
             test.innerHTML = 'Null Correlation Test';
-            H0.innerHTML = 'H<sub>0</sub>  : The two characters are independent';
         }
         else {
             test.innerHTML = 'Spearman Test';
@@ -102,21 +101,22 @@ sample_size_input.addEventListener('input', function() {
 
 dataForm.addEventListener('submit', function(event) {
     event.preventDefault();
+    document.getElementById('result').innerHTML = '';
     let allFilled = true;
 
+    const errorLabels = document.querySelectorAll('.error-label');
     const inputsAndSelects = document.querySelectorAll('input, select');
-
-    errorLabels.forEach(input => input.classList.remove('error'));
+    
+    errorLabels.forEach(label => label.style.display = 'none');
+    inputsAndSelects.forEach(input => input.classList.remove('error'));
 
     inputsAndSelects.forEach(input => {
-        if (input.value === '' && input.parentElement.classList.contains('hidden')) {
+        if (input.value === '' && !input.parentElement.classList.contains('hidden') && !input.disabled) {
             input.classList.add('error');
             const errorLabel = input.nextElementSibling;
-
-            if (errorLabel && errorLabel.classList,contains('error')) {
+            if (errorLabel && errorLabel.classList.contains('error-label')) {
                 errorLabel.style.display = 'block';
             }
-
             allFilled = false;
         }
     });

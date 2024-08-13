@@ -135,7 +135,12 @@ document.addEventListener('DOMContentLoaded', function() {
             nestedHeaders: [
                 [{label: 'Your Sample', colspan: n}]
             ],
-            licenseKey: 'non-commercial-and-evaluation'
+            licenseKey: 'non-commercial-and-evaluation',
+            cells: function (row, col) {
+                var cellProperties = {};
+                cellProperties.className = 'htCenter htMiddle';
+                return cellProperties;
+            }
         });
 
         H.addHook('afterChange', function(changes, source) {
@@ -193,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         inputsAndSelects.forEach(input => input.classList.remove('error'));
 
         inputsAndSelects.forEach(input => {
-            if (input.value === '' && !input.parentElement.classList.contains('hidden')) {
+            if (input.value === '' && !input.parentElement.classList.contains('hidden') && !input.disabled) {
                 input.classList.add('error');
                 const errorLabel = input.nextElementSibling;
                 if (errorLabel && errorLabel.classList.contains('error-label')) {
