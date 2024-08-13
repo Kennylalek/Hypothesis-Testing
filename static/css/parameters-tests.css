@@ -262,13 +262,17 @@ label {
 }
 
 h5 {
+    /*
     display: flex;
     align-items: center;
     justify-content: center;
+    */
+    vertical-align: middle;
     font-size: 1.05rem;
     font-weight: 400;
     height: 3rem;
 }
+
 
 .final-solution {
     display: flex;
