@@ -22,7 +22,7 @@ character_type.addEventListener('change', function() {
         test_type.disabled = true;
         sample_size_input.disabled = true;
         dimensions_div.style.display = 'flex';
-        test.innerHTML = 'Qualitative Variables Test';
+        test.innerHTML = 'Categorical Variables Test';
         H0.innerHTML = 'H<sub>0</sub>  : The two characters are independent';
         document.getElementById('rows-label').innerHTML = 'Number of Rows';
         document.getElementById('cols-label').innerHTML = 'Number of Columns';
