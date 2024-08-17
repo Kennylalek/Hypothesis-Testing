@@ -483,3 +483,169 @@ def wilcoxon_test(sample_1, sample_2, sample_size, alpha) :
         acceptance =  w <= critical_value and w >= -critical_value
 
     return acceptance, formula, symbol, critical_value, critical_region, w, w_plus, w_minus
+
+ 
+def chi_square_test(data, initial, r, k, alpha, distribution, params) :
+    values = []
+    middle_values = []
+    n = sum(data)
+
+    if r == 0 :
+        for i in range(k) :
+            values.append(initial + i)
+        middle_values = values
+        print("avcsbcasdkj")
+    else :
+        for i in range(k) :
+            values.append(initial + (i + 1) * r)
+            middle_values.append(initial + (2 * i + 1) * r / 2)
+
+    values = np.array(values)
+
+    if params == 'k' :
+        weighted_sum = sum(value * freq for value, freq in zip(middle_values, data))
+        total_frequency = sum(data)
+        mean = weighted_sum / total_frequency
+
+        # Calculate standard deviation
+        variance = sum(freq * (value - mean) ** 2 for value, freq in zip(middle_values, data)) / total_frequency
+        std_dev = math.sqrt(variance)
+
+        p = (mean, std_dev)
+        print("avcsbcasdkj")
+    
+    else :
+        p = params
+
+    if distribution == 'norm' :
+        theoritical = np.array([n * (stats.norm.cdf(element, loc = p[0], scale = p[1]) - stats.norm.cdf(element - r, loc = p[0], scale = p[1])) for element in values])
+        dist = r"\;N" + f"({p[0]}, {round(p[1] ** 2, 2)})"
+        num_p = 2
+
+    elif distribution == 'expon' :
+        theoritical = np.array([n * (stats.expon.cdf(element, loc = p[0]) - stats.expon.cdf(element - r, loc = p[0]) for element in values)])
+        dist = r"\;\text{Exp}" + f"({1 / p[0]}"
+        num_p = 1
+
+    elif distribution == 'poisson' :
+        print("avcsbcasdkj")
+        print(values, n * (stats.poisson.pmf(1., p[0])))
+        theoritical = np.array([n * stats.poisson.pmf(element, p[0]) for element in values])
+        dist = r"\; Poisson" + f"({p[0]})"
+        num_p = 1
+        print("avcsbcasdkj")
+
+    differences = values - theoritical
+    differences = [round(element ** 2, 3) for element in differences]
+
+    final = differences / theoritical
+
+    statistic = max(final)
+    critical_value = round(stats.chi2.ppf(1 - alpha, k - 1 - num_p), 3)
+    
+
+    acceptance = statistic < critical_value
+
+    formula = r"\;\chi_c^2 = \sum\limits_{i = 1}^k \frac{(O_i - C_i)^2}{C_i}"
+    symbol = r"\;\chi^2_" + f"{{{alpha}}} = {critical_value}"
+    critical_region = r"\;" + f"[0, {critical_value}["
+
+    return acceptance, formula, symbol, critical_value, critical_region, statistic, dist
+
+
+def kolmogorov_sminrov_test_grouped_data(data, initial, r, k, alpha, distribution, params) :
+        
+    values = []
+    middle_values = []
+
+    if r == 0 :
+        for i in range(k) :
+            values.append(initial + i)
+        middle_values = values
+    else :
+        for i in range(k) :
+            values.append(initial + (i + 1) * r)
+            middle_values.append(initial + (2 * i + 1) * r / 2)
+
+    
+    if params == 'k' :
+        weighted_sum = sum(value * freq for value, freq in zip(middle_values, data))
+        total_frequency = sum(data)
+        mean = weighted_sum / total_frequency
+
+        # Calculate standard deviation
+        variance = sum(freq * (value - mean) ** 2 for value, freq in zip(middle_values, data)) / total_frequency
+        std_dev = math.sqrt(variance)
+
+        p = (mean, std_dev)
+    
+    else :
+        p = params
+
+    cumulative_sum = np.cumsum(data)
+    total_sum = cumulative_sum[-1]
+    print("total sum : ", total_sum)
+
+    relative_cumultive = cumulative_sum / total_sum
+
+    if distribution == 'norm' :
+        initial_value = stats.norm.cdf(initial, loc = p[0], scale = p[1])
+        values = np.array([stats.norm.cdf(element, loc = p[0], scale = p[1]) - initial_value for element in values])
+        dist = r"\;N" + f"({p[0]}, {p[1] ** 2})"
+    elif distribution == 'expon' :
+        initial_value = stats.expon.cdf(initial, scale = p[0])
+        values = np.array([stats.expon.cdf(element, loc = p[0]) - initial_value for element in values])
+        dist = r"\;\text{Exp}" + f"({1 / p[0]}"
+    elif distribution == 'poisson' :
+        print(values)
+        values = np.array([stats.poisson.cdf(element, p[0]) for element in values])
+        dist = r"\;\text{Poisson}" + f"({p[0]})"
+        print('poisson')
+
+    differences = values - relative_cumultive
+    differences = [round(abs(element), 3) for element in differences]
+
+    print(differences)
+
+    statistic = max(differences)
+    print(statistic)
+    critical_value = kolmogorov_sminrov_critical_values[alpha][total_sum] # / math.sqrt(total_sum)
+
+    critical_value = round(critical_value, 3)
+
+    acceptance = statistic < critical_value
+
+    formula = r"\;D_n = sup|F_n(x) - F(x)|"
+    symbol = r"\;\frac{c}{\sqrt{n}} = " + f"{critical_value}"
+    critical_region = r"\;" + f"[0, {critical_value}["
+
+    return acceptance, formula, symbol, critical_value, critical_region, statistic, dist
+
+        
+def kolmogorov_sminrov_test_raw_data(data, n, alpha, distribution, params) :
+
+    if params == 'k' :
+        mean = np.mean(data)
+        std = np.std(data)
+        p = (mean, std)
+    else :
+        p = params
+
+    distributions = {
+        'expon' : r"\;\text{Exp}" + f"({1 / p[0]}",
+        'norm' : r"\;\mathcal{N}" + f"({p[0]}, {p[1] ** 2}",
+        'poisson' : r"\;\text{Poisson}" + f"({p[0]})"
+    }
+
+    dist = distributions[distribution]
+
+    D, p = stats.kstest(data, distribution, args = p)
+    critical_value = round(kolmogorov_sminrov_critical_values[alpha][n] / math.sqrt(n), 3)
+
+    acceptance = D < critical_value
+
+    formula = r"\;D_n = sup|F_n(x) - F(x)|"
+    symbol = r"\;\frac{c}{\sqrt{n} = }" + f"{critical_value}"
+    critical_region = r"\;" + f"[0, {critical_value}["
+
+    return acceptance, formula, symbol, critical_value, critical_region, D, dist

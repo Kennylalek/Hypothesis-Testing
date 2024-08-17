@@ -32,6 +32,10 @@ def multiple_sample_tests() :
 def non_parametric_tests() :
     return render_template('non-parametric.html')
 
+@app.route('/homogeneity-tests')
+def homogeneity_tests() :
+    return render_template('homogeneity-tests.html')
+
 
 @app.route('/get-result', methods = ['POST'])
 def get_result() :
@@ -379,6 +383,124 @@ def non_parametric() :
     
     return jsonify(data)
 
+
+@app.route('/homogeneity', methods = ['POST'])
+def homogeneity() :
+    try :
+        distributions = {
+            'a Normal' : 'norm',
+            'an Exponential' : 'expon',
+            'a Poisson' : 'poisson'
+        }
+
+        recieved = request.json
+        print("hellooooo")
+        form_data = recieved.get('form')
+        table_data = recieved.get('table')
+        alpha = int(form_data['alpha'])
+        print(table_data)
+        table_data = table_data[0]
+        table_data = [float(element) for element in table_data]
+        
+        print("kjkjkj")
+
+        test = form_data['test-select']
+        print("heeeeree")
+        print(table_data)
+        print(test)
+
+        if test != 'chi2' :
+            data_type = form_data['data-type']
+        else :
+            data_type = 'classes'
+
+        known = form_data['param']
+
+        if test != 'normality' :
+            dist = form_data['distribution']
+        else :
+            dist = 'a Normal'
+
+        if data_type == 'classes' :
+            initial = float(form_data['initial'])
+            k = int(form_data['sample-size'])
+            print('we good')
+            
+            if dist != "a Poisson" :
+                ran = float(form_data['range'])
+            else :
+                ran = 0
+                print('here too')
+
+            size = sum(table_data)
+
+            if known == 'given' :
+                mean = float(form_data['sample-mean'])
+
+                if dist != 'a Normal' :
+                    p = (mean)
+                else :
+                    std = float(form_data['std'])
+                    p = (mean, std)
+            else :
+                p = 'k'
+                print("lol")
+
+            if test == 'samir' :
+                print('maybe here')
+                result = kolmogorov_sminrov_test_grouped_data(table_data, initial, ran, k, alpha / 100, distributions[dist], p)
+                print("kkfhskjhd")
+            elif test == 'chi2' :
+                print("here we go")
+                print(table_data, initial, ran, k, alpha / 100, distributions[dist], p)
+                result = chi_square_test(table_data, initial, ran, k, alpha / 100, distributions[dist], p)
+                print("saaad")
+
+        else :
+            n = form_data['sample-size']
+            size = n
+            if known == 'given' :
+                mean = float(form_data['sample-mean'])
+
+                if dist != 'a Normal' :
+                    p = (mean)
+                else :
+                    std = float(form_data['std'])
+                    p = (mean, std)
+            else :
+                p = 'k'
+
+            if test == 'samir' :
+                result = kolmogorov_sminrov_test_raw_data(table_data, n, alpha / 100, distributions[dist], p)
+
+
+        if bool(result[0]) :
+            text = r'we\;accept\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) + r" \in " + str(result[4]) + r",\;then\;"
+            
+        else :
+            text = r'we\;reject\;H_0'
+            desc = r"Since\;" + str(round(result[5], 3)) +  r" \notin " + str(result[4]) + r',\;then\;'
+            
+
+        data = {
+            "test" : test,
+            "dist" : result[6],
+            "n" : size,
+            "alpha" : alpha / 100,
+            "formula" : result[1],
+            "stat_value" : round(result[5], 3),
+            "critical_region" : result[4],
+            "symbol" : result[2],
+            "desc" : desc,
+            "text" : text
+        }
+
+    
+    except Exception as e :
+        return e
+    
+    return jsonify(data)
 
 if __name__ == "__main__" :
     app.run(debug = True, port=5001)
