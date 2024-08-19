@@ -28,8 +28,8 @@ The **Hypothesis Testing Statistics Calculator** is a Flask-based web applicatio
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/hypothesis-testing-calculator.git
-   cd hypothesis-testing-calculator
+   git clone https://github.com/Kennylalek/Hypothesis-Testing.git
+   cd Hypothesis-Testing
    ```
 
 2. **Create a virtual environment:**
