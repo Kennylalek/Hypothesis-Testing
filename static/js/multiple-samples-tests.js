@@ -106,10 +106,6 @@ dataForm.addEventListener('submit', function(event) {
         })
         .then(data => {
             solution.style.display = 'block';
-            let region = `\\( ${data.critical_region} \\)`;
-            let symbol = `\\( ${data.symbol} \\)`;
-            let desc = `\\( ${data.desc} \\)`;
-            let text = `\\( ${data.text} \\)`;
 
             let test = data.t;
             console.log(test);
@@ -123,7 +119,7 @@ dataForm.addEventListener('submit', function(event) {
                                 <th>Source of Variation</th>
                                 <th>Sum of Squares (SS)</th>
                                 <th>Degrees of Freedom (df)</th>
-                                <th>Mean Square (MS)</th>
+                                <th>Mean Square</th>
                                 <th>F-value</th>
                             </tr>
                         </thead>
@@ -149,10 +145,10 @@ dataForm.addEventListener('submit', function(event) {
                             </tr>
                         </tbody>
                     </table>
-                    <h5>Critical value : ${symbol}</h5>
+                    <h5>\\(Critical\\;value : ${data.symbol} \\)</h5>
                     <div>
                         <p>
-                            ${desc}${text}
+                            \\(${data.desc}${data.text}\\)
                         </p>
                     </div>
                 `;
@@ -161,25 +157,25 @@ dataForm.addEventListener('submit', function(event) {
                 solution.innerHTML = `
                     <div>
                         <h3>Solution :</h3>
-                        <h5>Statistic : \\( ${data.formula} \\)</h5>
-                        ${test == 'Bartlett' ? `<h5>With : \\( ${data.lambda} \\)</h5>` : ''}
+                        <h5>\\(Statistic : ${data.formula} \\)</h5>
+                        ${test == 'Bartlett' ? `<h5>\\(With :  ${data.lambda} \\)</h5>` : ''}
                     </div>
                     <div>
                         <div>
-                            <h5>Total Size n = ${data.n}</h5>
-                            <h5>Number of Samples k = ${data.k}</h5>
-                            <h5>Significance level α = ${data.alpha}</h5>
+                            <h5>\\(Total\\;Size\\;n = ${data.n}\\)</h5>
+                            <h5>\\(Number\\;of\\;Samples\\;k = ${data.k}\\)</h5>
+                            <h5>\\(Significance\\;level\\;\\alpha = ${data.alpha}\\)</h5>
                         </div>
                         <div>
                             
-                            <h5>Statistic value : ${data.stat_value}</h5>
-                            <h5>Critical value : ${symbol}</h5>
-                            <h5>Critical region : ${region}</h5>
+                            <h5>\\(Statistic\\;value : ${data.stat_value}\\)</h5>
+                            <h5>\\(Critical\\;value : ${data.symbol}\\)</h5>
+                            <h5>\\(Critical\\;region : ${data.critical_region}\\)</h5>
                         </div>
                     </div>
                     <div>
                         <p>
-                            ${desc}${text}
+                            \\(${data.desc}${data.text}\\)
                         </p>
                     </div>
                 `;

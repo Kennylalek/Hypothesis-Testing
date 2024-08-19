@@ -79,6 +79,28 @@ input:disabled {
     gap: 2rem;
 }
 
+#hidden-links {
+    width: 100%;
+    background-color: #007bbf;
+    position: absolute;
+    display: none;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1.5rem 4rem;
+    padding-top: 0.8rem;
+    top: 100%;
+    right: 0%;
+}
+
+#hidden-links ul {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    justify-content: space-around;
+    gap: 2rem;
+}
+
 .nav-link {
     color: rgba(255, 255, 255, 0.5);
     padding: 0.5rem 1rem;
@@ -146,6 +168,7 @@ h4 {
     font-size: 1.4rem;
 }
 
+
 @media screen and (max-width: 920px) {
     #icon-drop {
         display: block;
@@ -157,5 +180,19 @@ h4 {
 
     #links {
         display: none;
+    }
+
+    section {
+        flex-direction: column;
+    }
+
+    #first, .img {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 920px) {
+    #hidden-links {
+        display: none !important;
     }
 }

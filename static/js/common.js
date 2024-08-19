@@ -16,6 +16,18 @@ document.querySelectorAll('input, select').forEach(element => {
     });
 });
 
+
+document.querySelector('#icon-drop').addEventListener('click', function() {
+    let hidden = document.querySelector('#hidden-links');
+    console.log("hehehehe");
+    if (hidden.style.display == 'none' || hidden.style.display == '') {
+        hidden.style.display = 'flex';
+    }
+    else {
+        hidden.style.display = 'none';
+    }
+});
+
 document.querySelector('#scroll').addEventListener("click", function() {
     let container = document.getElementById("container");
     let offset = 30;

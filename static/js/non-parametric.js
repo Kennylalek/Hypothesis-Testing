@@ -43,7 +43,7 @@ sample_size_1.addEventListener('input', function() {
         if (test_select.value == 'MW') {
             var data = [new Array(n).fill('')];
 
-            let wid = n * 100 + 50;
+            let wid = n * 100;
 
             let X = document.getElementById('rows').value;
 
@@ -68,32 +68,34 @@ sample_size_1.addEventListener('input', function() {
             });
         }
         else {
-            var data = Array.from({ length: 2 }, () => Array(n).fill(''));
+            if (n >= 7) {
+                var data = Array.from({ length: 2 }, () => Array(n).fill(''));
 
-            let wid = n * 100 + 50;
+                let wid = n * 100 + 50;
 
-            let X = document.getElementById('rows').value;
-            let Y = document.getElementById('cols').value;
+                let X = document.getElementById('rows').value;
+                let Y = document.getElementById('cols').value;
 
-            hot1 = new Handsontable(spreadsheets[0], {
-                data: data,
-                rowHeaders: [X, Y],
-                colHeaders: true,
-                width: (wid > 1000) ? '180%' : wid,
-                height: 'auto',
-                rowHeaderWidth: 'auto',
-                licenseKey: 'non-commercial-and-evaluation',
-                rowHeights: 30, 
-                colWidths: 100,
-                nestedHeaders: [
-                    [{ label: 'Samples', colspan: n }]
-                ],
-                cells: function (row, col) {
-                    var cellProperties = {};
-                    cellProperties.className = 'htCenter htMiddle';
-                    return cellProperties;
-                }
-            });
+                hot1 = new Handsontable(spreadsheets[0], {
+                    data: data,
+                    rowHeaders: [X, Y],
+                    colHeaders: true,
+                    width: (wid > 1000) ? '180%' : wid,
+                    height: 'auto',
+                    rowHeaderWidth: 120,
+                    licenseKey: 'non-commercial-and-evaluation',
+                    rowHeights: 30, 
+                    colWidths: 100,
+                    nestedHeaders: [
+                        [{ label: 'Samples', colspan: n }]
+                    ],
+                    cells: function (row, col) {
+                        var cellProperties = {};
+                        cellProperties.className = 'htCenter htMiddle';
+                        return cellProperties;
+                    }
+                });
+            }
         }
     }
     else {
@@ -112,7 +114,7 @@ sample_size_2.addEventListener('input', function() {
         if (test_select.value == 'MW') {
             var data = [new Array(n).fill('')];
 
-            let wid = n * 100 + 50;
+            let wid = n * 100;
 
             let Y = document.getElementById('cols').value;
 
@@ -154,7 +156,7 @@ dataForm.addEventListener('submit', function(event) {
     inputsAndSelects.forEach(input => input.classList.remove('error'));
 
     inputsAndSelects.forEach(input => {
-        if (input.value === '' && !input.parentElement.classList.contains('hidden') && !input.disabled) {
+        if (input.value === '' && input.parentElement.style.display != 'none' && !input.disabled) {
             input.classList.add('error');
             const errorLabel = input.nextElementSibling;
             if (errorLabel && errorLabel.classList.contains('error-label')) {
@@ -200,37 +202,28 @@ dataForm.addEventListener('submit', function(event) {
         })
         .then(data => {
             console.log(data.alpha);
-            
             solution.style.display = 'block';
-            let formula = `\\( ${data.formula} \\)`;
-            let region = `\\( ${data.critical_region} \\)`;
-            let symbol = `\\( ${data.symbol} \\)`;
-            let desc = `\\( ${data.desc} \\)`;
-            let text = `\\( ${data.text} \\)`;
-
-            let char = data.character;
-
             solution.innerHTML = `
                 <div>
                     <h3>Solution :</h3>
                 </div>
                 <div>
                     <div>
-                        <h5>${data.test == 'MW' ? 'First sample ranks  u<sub>1</sub> = ' : 'Positive ranks  w<sub>+</sub> = '} ${data.v1}</h5>
-                        <h5>${data.test == 'MW' ? 'Second sample ranks  u<sub>2</sub> = ' : 'Negative ranks  w<sub>-</sub> = '} ${data.v2}</h5>
-                        <h5>${data.test == 'MW' ? 'Sample sizes :  n<sub>1</sub> = ' + data.n1 + '  n<sub>2</sub> = ' + data.n2 : 'Sample size  n = ' + data.n1}</h5>
-                        <h5>Significance level α = ${data.alpha}</h5>
+                        <h5>\\(${data.test == 'MW' ? 'First\\;sample\\;ranks\\;u_1 = ' : 'Positive\\;ranks\\;w_+ = '} ${data.v1}\\)</h5>
+                        <h5>\\(${data.test == 'MW' ? 'Second\\;sample\\;ranks\\;u_2 = ' : 'Negative\\;ranks\\;w_- = '} ${data.v2}\\)</h5>
+                        <h5>\\(${data.test == 'MW' ? 'Sample\\;sizes : n_1 = ' + data.n1 + '\\;n_2 = ' + data.n2 : 'Sample\\;size\\;n = ' + data.n1}\\)</h5>
+                        <h5>\\(Significance\\;level\\; \\alpha = ${data.alpha}\\)</h5>
                     </div>
                     <div>
-                        <h5>Statistic : ${formula}</h5>
-                        <h5>Statistic value : ${data.stat_value}</h5>
-                        <h5>Critical value : ${symbol}</h5>
-                        <h5>Critical region : ${region}</h5>
+                        <h5>\\(Statistic : ${data.formula}\\)</h5>
+                        <h5>\\(Statistic\\;value : ${data.stat_value}\\)</h5>
+                        <h5>\\(Critical\\;value : ${data.symbol}\\)</h5>
+                        <h5>\\(Critical\\;region : ${data.critical_region}\\)</h5>
                     </div>
                 </div>
                 <div>
                     <p>
-                        ${desc}${text}
+                        \\(${data.desc}${data.text}\\)
                     </p>
                 </div>
             `;

@@ -6,18 +6,26 @@
     <link rel="stylesheet" href="/static/css/common.css">
     <link rel="stylesheet" href="/static/css/parameters-tests.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@8.4.0/dist/handsontable.full.min.css">
-    <title>Hypothesis Testing</title>
+    <title>Comparison Tests</title>
 </head>
 <body>
     <nav id="navbar" class="a">
-        <a id="title">Hypothesis Testing</a>
+        <a href="/" id="title">Hypothesis Testing</a>
         <button id="icon-drop"><img src="/static/images/menu-svgrepo-com.svg"></button>
         <div id="links">
             <ul>
-                <li><a class="nav-link">Home</a></li>
-                <li><a class="nav-link">Calculators</a></li>
-                <li><a class="nav-link">About</a></li>
-                <li><a class="nav-link">Contact us</a></li>
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/tests" class="nav-link">Calculators</a></li>
+                <li><a href="/construction" class="nav-link">About</a></li>
+                <li><a href="/construction" class="nav-link">Contact us</a></li>
+            </ul>
+        </div>
+        <div id="hidden-links">
+            <ul>
+                <li><a href="/" class="nav-link">Home</a></li>
+                <li><a href="/tests" class="nav-link">Calculators</a></li>
+                <li><a href="/construction" class="nav-link">About</a></li>
+                <li><a href="/construction" class="nav-link">Contact us</a></li>
             </ul>
         </div>
     </nav>
@@ -51,12 +59,12 @@
             <div class="double">
                 <div class="half left">
                     <label>First Sample Size (n<sub>1</sub>)</label>
-                    <input class="size" id="sample-size-1" type="text" name="sample-size-1" value="10">
+                    <input class="size" id="sample-size-1" type="text" name="sample-size-1">
                     <label class="error-label">Field required</label>
                 </div>
                 <div class="half right">
                     <label>Second Sample Size (n<sub>2</sub>)</label>
-                    <input class="size" id="sample-size-2" type="text" name="sample-size-2" value="10">
+                    <input class="size" id="sample-size-2" type="text" name="sample-size-2">
                     <label class="error-label">Field required</label>
                 </div>
             </div>
@@ -118,24 +126,24 @@
             <div id="mean-div" class="double">
                 <div class="mean-div-1 half left">
                     <label class="mean-label label">First Sample Mean (x̄<sub>1</sub>)</label>
-                    <input class="mean-inp" id="sample_mean-1" type="text" name="sample-mean-1" value="176">
+                    <input class="mean-inp" id="sample_mean-1" type="text" name="sample-mean-1">
                     <label class="error-label">Field required</label>
                 </div>
                 <div class="mean-div-2 half right">
                     <label class="mean-label label">Second Sample Mean (x̄<sub>2</sub>)</label>
-                    <input class="mean-inp" type="text" id="sample-mean-2" name="sample-mean-2" value="90">
+                    <input class="mean-inp" type="text" id="sample-mean-2" name="sample-mean-2">
                     <label class="error-label">Field required</label>
                 </div>
             </div>
             <div id="std-div" class="double">
                 <div class="std-div-1 half left">
                     <label class="std-label label">First Population Std Dev (σ<sub>1</sub>)</label>
-                    <input class="std-inp" id="std-1" type="text" name="std-1" value="176">
+                    <input class="std-inp" id="std-1" type="text" name="std-1">
                     <label class="error-label">Field required</label>
                 </div>
                 <div class="std-div-2 half right">
                     <label class="std-label label">Second Population Std Dev (σ<sub>2</sub>)</label>
-                    <input class="std-inp" type="text" id="std-2" name="std-2" value="90">
+                    <input class="std-inp" type="text" id="std-2" name="std-2">
                     <label class="error-label">Field required</label>
                 </div>
             </div>

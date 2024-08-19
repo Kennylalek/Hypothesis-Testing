@@ -125,16 +125,23 @@ SD_select.addEventListener('change', function() {
 document.addEventListener('DOMContentLoaded', function() {
     size.addEventListener('input', function() {
         spreadsheet.innerHTML = '';
+
         let n = parseInt(size.value);
         var arr = [new Array(n).fill('')];
-        
+
+        let wid = n * 100;
+
         var H = new Handsontable(spreadsheet, {
             data: arr,
             colHeaders: true,
             rowHeaders: false,
+            width: (wid > 1000) ? '180%' : wid,
+            height: 'auto',
             nestedHeaders: [
                 [{label: 'Your Sample', colspan: n}]
             ],
+            rowHeights: 30, 
+            colWidths: 100,
             licenseKey: 'non-commercial-and-evaluation',
             cells: function (row, col) {
                 var cellProperties = {};
@@ -190,6 +197,8 @@ document.addEventListener('DOMContentLoaded', function() {
     dataForm.addEventListener('submit', function(event) {
         event.preventDefault();
         document.getElementById('result').innerHTML = '';
+        solution.style.display = 'none';
+
         let allFilled = true;
         const errorLabels = document.querySelectorAll('.error-label');
         const inputsAndSelects = document.querySelectorAll('input, select');
@@ -212,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const formData = new FormData(dataForm);
             const formBody = new URLSearchParams(formData).toString();
 
-            fetch('/get-result', {
+            fetch('/conformity', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -227,32 +236,28 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 solution.style.display = 'block';
-                let formula = `\\( ${data.formula} \\)`;
-                let region = `\\( ${data.critical_region} \\)`;
-                let symbol = `\\( ${data.symbol} \\)`;
-                let desc = `\\( ${data.desc} \\)`;
-                let text = `\\( ${data.text} \\)`;
+
                 solution.innerHTML = `
                     <div>
                         <h3>Solution :</h3>
                     </div>
                     <div>
                         <div>
-                            <h5>Parameter : ${data.parameter}</h5>
-                            <h5>Test type : ${data.test_type}</h5>
-                            <h5>Test value : ${data.test_value}</h5>
-                            <h5>Significance level α = ${data.alpha}</h5>
+                            <h5>\\(Parameter : ${data.parameter} \\)</h5>
+                            <h5>\\(Test\\;type : ${data.test_type} \\)</h5>
+                            <h5>\\(Test\\;value : ${data.test_value} \\)</h5>
+                            <h5>\\(Significance\\;level\\; \\alpha = ${data.alpha} \\)</h5>
                         </div>
                         <div>
-                            <h5>Statistic : ${formula}</h5>
-                            <h5>Statistic value : ${data.stat_value}</h5>
-                            <h5>Critical value : ${symbol}</h5>
-                            <h5>Critical region : ${region}</h5>
+                            <h5>\\(Statistic : ${data.formula} \\)</h5>
+                            <h5>\\(Statistic\\;value : ${data.stat_value} \\)</h5>
+                            <h5>\\(Critical\\;value : ${data.symbol} \\)</h5>
+                            <h5>\\(Critical\\;region : ${data.critical_region} \\)</h5>
                         </div>
                     </div>
                     <div>
                         <p>
-                            ${desc}${text}
+                            \\( ${data.desc}${data.text} \\)
                         </p>
                     </div>
                 `;

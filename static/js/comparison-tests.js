@@ -8,7 +8,6 @@ var data_type = document.querySelector('#data-type');
 var spreadsheets = document.querySelectorAll('.spreadsheet');
 var size_inputs = document.querySelectorAll('.size');
 
-
 var mean_div = document.querySelector('#mean-div');
 var std_div = document.querySelector('#std-div');
 
@@ -30,7 +29,7 @@ parameter_select.addEventListener('change', function() {
             std_select.disabled = false;
             mean_div.classList.remove('hidden');
             std_div.classList.remove('hidden');
-            add_text(' Sample Ean (x̄', mean_div);
+            add_text(' Sample Mean (x̄', mean_div);
             break;
         case 'Variance' :
             add_symbol('σ');
@@ -45,7 +44,7 @@ parameter_select.addEventListener('change', function() {
             std_select.disabled = true;
             mean_div.classList.remove('hidden');
             std_div.classList.add('hidden');
-            add_text(' Estimated Proportion (p', mean_div);
+            add_text(' Estimated Proportion (p)', mean_div);
             break;
     }
 });
@@ -102,14 +101,19 @@ for (let i = 0; i <= 1; i++) {
         let n = parseInt(this.value);
         var arr = [new Array(n).fill('')];
         var desc = ['First', 'Second'];
+        let wid = n * 100;
 
         var hot = new Handsontable(spreadsheets[i], {
             data: arr,
             colHeaders: true,
             rowHeaders: false,
+            width: (wid > 1000) ? '180%' : wid,
+            height: 'auto',
             nestedHeaders: [
                 [{label: desc[i] + ' Sample', colspan: n}]
             ],
+            rowHeights: 30, 
+            colWidths: 100,
             licenseKey: 'non-commercial-and-evaluation',
             cells: function (row, col) {
                 var cellProperties = {};
@@ -184,7 +188,7 @@ dataForm.addEventListener('submit', function(event) {
         const formData = new FormData(dataForm);
         const formBody = new URLSearchParams(formData).toString();
 
-        fetch('/get-params', {
+        fetch('/comparison', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -199,36 +203,31 @@ dataForm.addEventListener('submit', function(event) {
         })
         .then(data => {
             solution.style.display = 'block';
-            let formula = `\\( ${data.formula} \\)`;
-            let region = `\\( ${data.critical_region} \\)`;
-            let symbol = `\\( ${data.symbol} \\)`;
-            let desc = `\\( ${data.desc} \\)`;
-            let text = `\\( ${data.text} \\)`;
 
             solution.innerHTML = `
-                <div>
-                    <h3>Solution :</h3>
-                </div>
-                <div>
                     <div>
-                        <h5>Parameter : ${data.parameter}</h5>
-                        <h5>Test type : ${data.test_type}</h5>
-                        <h5>Test value : ${data.test_value}</h5>
-                        <h5>Significance level α = ${data.alpha}</h5>
+                        <h3>Solution :</h3>
                     </div>
                     <div>
-                        <h5>Statistic : ${formula}</h5>
-                        <h5>Statistic value : ${data.stat_value}</h5>
-                        <h5>Critical value : ${symbol}</h5>
-                        <h5>Critical region : ${region}</h5>
+                        <div>
+                            <h5>\\(Parameter : ${data.parameter} \\)</h5>
+                            <h5>\\(Test\\;type : ${data.test_type} \\)</h5>
+                            <h5>\\(Test\\;value : ${data.test_value} \\)</h5>
+                            <h5>\\(Significance\\;level\\; \\alpha = ${data.alpha} \\)</h5>
+                        </div>
+                        <div>
+                            <h5>\\(Statistic : ${data.formula} \\)</h5>
+                            <h5>\\(Statistic\\;value : ${data.stat_value} \\)</h5>
+                            <h5>\\(Critical\\;value : ${data.symbol} \\)</h5>
+                            <h5>\\(Critical\\;region : ${data.critical_region} \\)</h5>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <p>
-                        ${desc}${text}
-                    </p>
-                </div>
-            `;
+                    <div>
+                        <p>
+                            \\( ${data.desc}${data.text} \\)
+                        </p>
+                    </div>
+                `;
             MathJax.typesetPromise();
             let div = solution.children[1];
 

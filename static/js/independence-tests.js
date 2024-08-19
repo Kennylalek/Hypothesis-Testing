@@ -79,7 +79,7 @@ sample_size_input.addEventListener('input', function() {
                 colHeaders: true,
                 width: (wid > 1000) ? '180%' : wid,
                 height: 'auto',
-                rowHeaderWidth: 'auto',
+                rowHeaderWidth: 120,
                 licenseKey: 'non-commercial-and-evaluation',
                 rowHeights: 30, 
                 colWidths: 100,
@@ -150,44 +150,49 @@ dataForm.addEventListener('submit', function(event) {
             console.log(data.alpha);
             
             solution.style.display = 'block';
-            let formula = `\\( ${data.formula} \\)`;
-            let region = `\\( ${data.critical_region} \\)`;
-            let symbol = `\\( ${data.symbol} \\)`;
-            let desc = `\\( ${data.desc} \\)`;
-            let text = `\\( ${data.text} \\)`;
-
             let char = data.character;
+            let appliquable = data.appliquable;
 
-            solution.innerHTML = `
-                <div>
-                    <h3>Solution :</h3>
-                </div>
-                <div>
+            if (appliquable == 'yes') {
+                solution.innerHTML = `
                     <div>
-                        <h5>${char == 'qualitative' ? 'Rows' : 'First Character'} : ${data.rows}</h5>
-                        <h5>${char == 'qualitative' ? 'Columns' : 'Second Character'} : ${data.cols}</h5>
-                        <h5>Degrees of Freedom : ${data.dof}</h5>
-                        <h5>Significance level α = ${data.alpha}</h5>
+                        <h3>Solution :</h3>
                     </div>
                     <div>
-                        <h5>Statistic : ${formula}</h5>
-                        <h5>Statistic value : ${data.stat_value}</h5>
-                        <h5>Critical value : ${symbol}</h5>
-                        <h5>Critical region : ${region}</h5>
+                        <div>
+                            <h5>\\(${char == 'qualitative' ? 'Rows' : 'First\\;Character'} : ${data.rows} \\)</h5>
+                            <h5>\\(${char == 'qualitative' ? 'Columns' : 'Second\\;Character'} : ${data.cols}\\)</h5>
+                            <h5>\\(Degrees\\;of\\;Freedom : ${data.dof}\\)</h5>
+                            <h5>\\(Significance\\;level\\;\\alpha = ${data.alpha}\\)</h5>
+                        </div>
+                        <div>
+                            <h5>\\(Statistic : ${data.formula}\\)</h5>
+                            <h5>\\(Statistic\\;value : ${data.stat_value}\\)</h5>
+                            <h5>\\(Critical\\;value : ${data.symbol}\\)</h5>
+                            <h5>\\(Critical\\;region : ${data.critical_region}\\)</h5>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <p>
-                        ${desc}${text}
-                    </p>
-                </div>
-            `;
+                    <div>
+                        <p>
+                            \\(${data.desc}${data.text}\\)
+                        </p>
+                    </div>
+                `;
+                let div = solution.children[1];
+
+                div.classList.add('final-solution');
+                div.children[0].classList.add('half-div');
+                div.children[1].classList.add('half-div');
+            }
+            else {
+                solution.innerHTML = `
+                    <div>
+                        <h5>The sample does not satisfy the conditions for the test to be applied</h5>
+                        <h5>\\( \\forall i,j, C_{ij} > 5 \\)</div>
+                    </div>
+                `;
+            }
             MathJax.typesetPromise();
-            let div = solution.children[1];
-
-            div.classList.add('final-solution');
-            div.children[0].classList.add('half-div');
-            div.children[1].classList.add('half-div');
             solution.scrollIntoView({behavior: "smooth"});
             
         })
