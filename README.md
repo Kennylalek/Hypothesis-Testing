@@ -45,7 +45,7 @@ The **Hypothesis Testing Statistics Calculator** is a Flask-based web applicatio
 
 4. **Run the application:**
    ```bash
-   flask run
+   flask run --port 5001
    ```
    The app will be available at `http://127.0.0.1:5001/`.
 
