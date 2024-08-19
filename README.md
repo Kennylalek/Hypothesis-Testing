@@ -1,4 +1,3 @@
-```markdown
 # Hypothesis Testing Statistics Calculator
 
 ## Overview
@@ -66,4 +65,3 @@ If you would like to contribute to this project, feel free to fork the repositor
 - [Flask](https://flask.palletsprojects.com/) for providing a lightweight web framework.
 - [NumPy](https://numpy.org/) and [SciPy](https://scipy.org/) for their statistical functions.
 - The open-source community for continuous support and resources.
-```
