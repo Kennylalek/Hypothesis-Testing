@@ -363,3 +363,20 @@ h5{
         width: 100%;
     }
 }
+
+@media screen and (max-width: 560px) {
+    .double {
+        display: flex;
+        flex-direction: column;
+        max-width: 560px;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        height: auto;
+        gap: 1rem;
+    }
+
+    .img {
+        display: none;
+    }
+}

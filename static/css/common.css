@@ -123,7 +123,6 @@ input:disabled {
 .article p {
     font-size: 1.2rem;
     line-height: 2rem;
-    text-align: justify;
 }
 
 .article button {
@@ -194,5 +193,50 @@ h4 {
 @media screen and (min-width: 920px) {
     #hidden-links {
         display: none !important;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    nav {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    #hidden-links {
+        align-items: flex-start;
+        justify-content: flex-end;
+        width: auto;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    ul {
+        flex-direction: column !important;
+    }
+
+    #welcome {
+        text-align: center;
+    }
+
+    .article p {
+        text-align: center;
+    }
+
+    .article a {
+        display: flex;
+        justify-content: center;
+    }
+
+    .double , .full {
+        max-width: 300px !important;
+    }
+
+    .double div {
+        width: 100%;
+    }
+
+    .right input, .right select, .left input, .left select {
+        align-self: flex-start !important;
+        width: 100%;
     }
 }
