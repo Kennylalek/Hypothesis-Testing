@@ -51,7 +51,7 @@ sample_size_1.addEventListener('input', function() {
                 data: data,
                 rowHeaders: false,
                 colHeaders: true,
-                width: (wid > 1000) ? '180%' : wid,
+                width: (wid < 560) ? wid : '92vw',
                 height: 'auto',
                 rowHeaderWidth: 'auto',
                 licenseKey: 'non-commercial-and-evaluation',
@@ -71,7 +71,7 @@ sample_size_1.addEventListener('input', function() {
             if (n >= 7) {
                 var data = Array.from({ length: 2 }, () => Array(n).fill(''));
 
-                let wid = n * 100 + 50;
+                let wid = n * 100 + 100;
 
                 let X = document.getElementById('rows').value;
                 let Y = document.getElementById('cols').value;
@@ -80,9 +80,9 @@ sample_size_1.addEventListener('input', function() {
                     data: data,
                     rowHeaders: [X, Y],
                     colHeaders: true,
-                    width: (wid > 1000) ? '180%' : wid,
+                    width: (wid < 560) ? wid : '92%',
                     height: 'auto',
-                    rowHeaderWidth: 120,
+                    rowHeaderWidth: 100,
                     licenseKey: 'non-commercial-and-evaluation',
                     rowHeights: 30, 
                     colWidths: 100,
@@ -122,7 +122,7 @@ sample_size_2.addEventListener('input', function() {
                 data: data,
                 rowHeaders: false,
                 colHeaders: true,
-                width: (wid > 1000) ? '180%' : wid,
+                width: (wid < 560) ? wid : '92%',
                 height: 'auto',
                 rowHeaderWidth: 'auto',
                 licenseKey: 'non-commercial-and-evaluation',

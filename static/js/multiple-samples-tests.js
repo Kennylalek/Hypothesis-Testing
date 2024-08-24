@@ -218,7 +218,7 @@ function generate_table() {
             data: data,
             rowHeaders: true,
             colHeaders: headers,
-            width: (wid > 1000) ? '150%' : wid,
+            width: (wid < 560) ? wid : '92%',
             height: 'auto',
             rowHeights: 30,
             colWidths: 100,

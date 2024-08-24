@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data: arr,
             colHeaders: true,
             rowHeaders: false,
-            width: (wid > 1000) ? '180%' : wid,
+            width: (wid < 560) ? wid : '92%',
             height: 'auto',
             nestedHeaders: [
                 [{label: 'Your Sample', colspan: n}]

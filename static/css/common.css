@@ -228,7 +228,7 @@ h4 {
     }
 
     .double , .full {
-        max-width: 300px !important;
+        max-width: 250px !important;
     }
 
     .double div {
@@ -238,5 +238,44 @@ h4 {
     .right input, .right select, .left input, .left select {
         align-self: flex-start !important;
         width: 100%;
+    }
+
+    .btn-div {
+        width: 100% !important;
+    }
+
+    nav {
+        width: 100vw !important;
+    }
+
+    section {
+        width: 100vw !important;
+    }
+
+    #container {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    #container form {
+        min-width: 100vw !important;
+    }
+
+    #solution, #solution-multiple {
+        min-width: 90vw !important;
+        width: 90vw !important;
+    }
+
+    .final-solution {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
+    .half-div {
+        min-width: 250px;
+    }
+
+    .article h3, .article h1 {
+        text-align: center;
     }
 }

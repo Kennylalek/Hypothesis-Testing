@@ -98,18 +98,18 @@ size_input.addEventListener('input', function() {
             spreadsheet.style.display = 'block';
             data = [new Array(selectedValue).fill('')];
 
-            let wid = selectedValue * 100 + 50;
+            let wid = selectedValue * 100 + 100;
 
             hot = new Handsontable(spreadsheet, {
             data: data,
             rowHeaders: false,
             colHeaders: true,
-            width: (wid > 1000) ? '180%' : wid,
+            width: (wid < 560) ? wid : '92vw',
             height: 'auto',
-            rowHeaderWidth: 160,
+            rowHeaderWidth: 100,
             licenseKey: 'non-commercial-and-evaluation',
             rowHeights: 30, 
-            colWidths: 120,
+            colWidths: 100,
             nestedHeaders: [
                 [{ label: 'Sample', colspan: selectedValue }]
             ],
@@ -271,7 +271,7 @@ function generate_table() {
             data: data,
             rowHeaders: ['Freq'],
             colHeaders: headers,
-            width: (wid > 1000) ? '150%' : wid,
+            width: (wid < 560) ? wid : '92%',
             height: 'auto',
             rowHeights: 30,
             colWidths: 100,
